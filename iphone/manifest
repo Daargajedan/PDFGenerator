@@ -1,0 +1,18 @@
+#
+# this is your module manifest and used by Titanium
+# during compilation, packaging, distribution, etc.
+#
+version: 1.0.0
+apiversion: 2
+architectures: armv7 arm64 i386 x86_64
+description: PDF Generator
+author: Grupo W2ABrasil
+license: Software de propriedade privada, sua distribuição não é permitida.
+copyright: Copyright (c) 2017 by Your Company
+
+# these should not be edited
+name: PDF Generator
+moduleid: br.com.grupow2abrasil.pdfgenerator
+guid: 759fef8e-d557-4282-8ba8-628cba858ebc
+platform: iphone
+minsdk: 6.1.2.GA
