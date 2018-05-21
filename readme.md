@@ -7,7 +7,7 @@ Titanium module to handle PDF generation on iOS using Quartz 2D for fast renderi
 1. Download this project and open the .zip file in /build folder, then copy it's content to your project in the correct folder structure. The path will look like the following: `modules/iphone/br.com.grupow2abrasil.pdfgenerator/1.0.0`
 2. Open Studio, and the `tiapp.xml` file for the project in question.
 3. Switch to the `tiapp.xml` tab.
-4. In the application's `tiapp.xml`, find the <modules/> node, and replace it with the new <modules> content. If you already have modules, just add a new node for the PDF Generator module. Note that the "version" and "platform" attributes are optional. When "version" is not specified, the latest version of the module will be used (as of Titanium SDK 2.0.0).
+4. In the application's `tiapp.xml`, find the `<modules/>` node, and replace it with the new `<modules>` content. If you already have modules, just add a new node for the PDF Generator module. Note that the "version" and "platform" attributes are optional. When "version" is not specified, the latest version of the module will be used (as of Titanium SDK 2.0.0).
 ```xml
 <modules>
 	<module version="1.0.0" platform="iphone">br.com.grupow2abrasil.pdfgenerator</module>
