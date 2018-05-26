@@ -2,7 +2,7 @@
 
 ## Description
 
-Titanium module to handle PDF generation on iOS using Quartz 2D for fast rendering and good quality.
+Titanium module to handle PDF generation/edition on iOS using Quartz 2D for fast rendering and good quality.
 
 ## Accessing the PDF Generator Module
 
@@ -22,125 +22,312 @@ The pdfGenerator variable is a reference to the Module object.
 
 All parameters with `*` are required.
 
+####setProperties(obj`*`)
 ```javascript
 pdfGenerator.setProperties({
-	pdfName: "pdfOutputName",
-    title: "The title of the PDF",
-    author: "The author of the PDF",
-    subject: "A subject if you want",
-    keywords: "Keyworkds of the PDF",
-    creator: "PDF Creator"
+	pdfName: "output",
+    title: "",
+    author: "",
+    subject: "",
+    keywords: "",
+    creator: ""
 });
 ```
-Sets the properties of the PDF, *must* be called before everything if you want the properties to be setted.
+Sets the properties of the PDF, *must* be called before everything if you want the properties to be setted properly.
+| Name | Type | Description |
+| --- |:---:| --- |
+| obj | `Object` | property_name-to-property_value object structure |
 
-```javascript
-pdfGenerator.setTextColor(number*, number*, number*, number);
+####getProperties
 ```
-Sets the text color in RGBA notation where the first 3 parameters are Red, Green and Blue respectively and the last one is the Alpha.
-
-```javascript
-pdfGenerator.setDrawColor(number*, number*, number*, number);
+var props = pdfGenerator.getProperties();
 ```
-Sets the draw color in RGBA notation where the first 3 parameters are Red, Green and Blue respectively and the last one is the Alpha.
+Returns `Object` - PDF properties.
 
-```javascript
-pdfGenerator.setFillColor(number*, number*, number*, number);
-```
-Sets the fill color in RGBA notation where the first 3 parameters are Red, Green and Blue respectively and the last one is the Alpha. This property applies only for shapes.
-
-```javascript
-pdfGenerator.setLineWidth(number*);
-```
-Changes de line with of drawLine and the borders of drawRect
-
-```javascript
-pdfGenerator.setFontName(string*);
-```
-Sets a font. For some reason, it's not working properly, I'll fix it later.
-
-```javascript
-pdfGenerator.setTextSize(number*);
-```
-Sets the text size of drawText
-
-```javascript
-pdfGenerator.setPdfName(string*);
-```
-Sets the file name of the generated PDF
-
+####addNewPage()
 ```javascript
 pdfGenerator.addNewPage();
 ```
 Adds a new page to the PDF.
 
+####deletePage(page`*`)
 ```javascript
-pdfGenerator.drawText(string*, number*, number*, number*, number*);
+pdfGenerator.deletePage(3);
 ```
-Writes text to the PDF. The first parameter is the string to be write and the last 4 are coordinates in this order: x, y, width, height.
+Deletes a page from the PDF.
+| Name | Type | Description |
+| --- |:---:| --- |
+| page | `Number` | Index of the page to be deleted, starts with 1 and must be an Integer |
 
+####forEachPage(fnc`*`)
 ```javascript
-pdfGenerator.drawLine(number*, number*, number*, number*);
-```
-Draws a line from one point to other. The first 2 parameters indicates start point and the last 2 the end point: start.x, start.y, end.x, end.y
+pdfGenerator.forEachPage(function(pageIndex, total){
+	// Drawing functions here, you can draw the header and footer, example:
+	pdfGenerator.drawText("Page " + pageIndex + " of " + total, 20, 700, 572, 30);
 
+	// More drawing function as you wish
+});
+```
+Executes a function for each page of the PDF where you can draw into.
+| Name | Type | Description |
+| --- |:---:| --- |
+| fnc | `Function` | Function which will be executed for each page receiving the parameters index and total, both `Number`s |
+
+####setTextColor(R`*`, G`*`, B`*`, A)
 ```javascript
-pdfGenerator.drawRect(number*, number*, number*, number*);
+pdfGenerator.setTextColor(27, 27, 27, 1.0);
 ```
-Draws a rectangle. The parameters are coordinates in this order: x, y, width, height.
+Sets the text color in RGBA notation or RGB if A is omitted.
+| Name | Type | Description |
+| --- |:---:| --- |
+| R | `Number` | Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
+| G | `Number` | Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
+| B | `Number`| Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
+| A | `Number` | Alpha channel value, must be a value in the range from 0.0 (transparent) to 1.0 (solid color) |
 
+####setDrawColor(R`*`, G`*`, B`*`, A)
 ```javascript
-pdfGenerator.drawImage(string*, number*, number*, number*, number*);
+pdfGenerator.setDrawColor(27, 27, 27, 1.0);
 ```
-Draws an image. The first parameter is the complete path location of the file and the last 4 are coordinates in this order: x, y, width, height.
+Sets the draw color in RGBA notation or RGB if A is omitted.
+| Name | Type | Description |
+| --- |:---:| --- |
+| R | `Number` | Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
+| G | `Number` | Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
+| B | `Number`| Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
+| A | `Number` | Alpha channel value, must be a value in the range from 0.0 (transparent) to 1.0 (solid color) |
 
+####setFillColor(R`*`, G`*`, B`*`, A)
 ```javascript
-pdfGenerator.savePDF(string);
+pdfGenerator.setFillColor(255, 255, 255, 0.0);
 ```
-Saves the PDF file, calling event `pdfReady` when the file is ready. Accepts a string as parameter which sets the pdf name if it wasn't set with setProperties.
+Sets the fill color in RGBA notation or RGB if A is omitted. This property applies only for shapes.
+| Name | Type | Description |
+| --- |:---:| --- |
+| R | `Number` | Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
+| G | `Number` | Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
+| B | `Number`| Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
+| A | `Number` | Alpha channel value, must be a value in the range from 0.0 (transparent) to 1.0 (solid color) |
 
+####setLineWidth(width`*`)
 ```javascript
-pdfGenerator.getPdfName();
+pdfGenerator.setLineWidth(0.1);
 ```
-Returns string with the filename.
+Sets line width for upcoming lines and shapes.
+| Name | Type | Description |
+| --- |:---:| --- |
+| width | `Number` | Line width, must be a float/double |
 
-```javascript
-pdfGenerator.getFontName();
-```
-Returns current font name.
-
-```javascript
-pdfGenerator.getPageCount();
-```
-Returns number of pages.
-
+####getLineWidth()
 ```javascript
 pdfGenerator.getLineWidth();
 ```
-Returns line width.
+Returns `Number` - Line width.
 
+####setFontName(fontName`*`)
+```javascript
+pdfGenerator.setFontName("Helvetica");
+```
+Sets text font for upcoming text elements.
+| Name | Type | Description |
+| --- |:---:| --- |
+| fontName | `String` | Font name or family. Style or variant must be included in the fontName, example: `Helvetica-Bold` |
+
+####getFontName()
+```javascript
+pdfGenerator.getFontName();
+```
+Returns `String` - Current font name.
+
+####setTextSize(size`*`)
+```javascript
+pdfGenerator.setTextSize(14);
+```
+Sets text size for upcoming text elements.
+| Name | Type | Description |
+| --- |:---:| --- |
+| size | `Number` | Font name or family. Style or variant must be included in the fontName, example: `Helvetica-Bold` |
+
+####getTextSize()
 ```javascript
 pdfGenerator.getTextSize();
 ```
-Returns current size of text.
+Returns `Number` - Current size of text.
 
+####setTextAlign(alignment`*`)
+```javascript
+pdfGenerator.setTextAlign("center");
+```
+Sets text horizontal alignment for upcoming text elements.
+| Name | Type | Description |
+| --- |:---:| --- |
+| alignment | `String` | Horizontal text alignment, available values are `left`, `center`, `right`, `justified` |
+
+####getTextAlign()
+```javascript
+pdfGenerator.getTextAlign();
+```
+Returns `String` - Current text horizontal alignment.
+
+####setTextVerticalAlign(alignment`*`)
+```javascript
+pdfGenerator.setTextVerticalAlign("middle");
+```
+Sets text vertical alignment for upcoming text elements.
+| Name | Type | Description |
+| --- |:---:| --- |
+| alignment | `String` | Vertical text alignment, available values are `top`, `middle`, `bottom` |
+
+####getTextVerticalAlign()
+```javascript
+pdfGenerator.getTextVerticalAlign();
+```
+Returns `String` - Current text vertical alignment.
+
+####setPdfName(pdfName`*`)
+```javascript
+pdfGenerator.setPdfName("my_awesome_pdf");
+```
+Sets the file name of the generated PDF.
+| Name | Type | Description |
+| --- |:---:| --- |
+| pdfName | `String` | The name of the PDF without file extension |
+
+####getPdfName()
+```javascript
+pdfGenerator.getPdfName();
+```
+Returns `String` - PDF filename.
+
+####drawText(text`*`, x`*`, y`*`, width`*`, height`*`)
+```javascript
+pdfGenerator.drawText("The fox jumps over the lazy dog", 20, 20, 572, 30);
+```
+Writes text to the PDF.
+| Name | Type | Description |
+| --- |:---:| --- |
+| text | `String` | The text to be drawn |
+| x | `Number` | Top-down horizontal coordinate where 0 is the start point at top, must be an Integer |
+| y | `Number` | Left-right vertical coordinate where 0 is the start point at left, must be an Integer |
+| width | `Number` | Width of the rect where the text will be drawn, must be an Integer |
+| height | `Number` | Height of the rect where the text will be drawn, must be an Integer |
+
+####drawLine(startX`*`, startY`*`, endX`*`, endY`*`)
+```javascript
+pdfGenerator.drawLine(20, 20, 500, 500);
+```
+Draws a line from one point to other.
+| Name | Type | Description |
+| --- |:---:| --- |
+| startX | `Number` | Top-down vertical coordinate for the start point, must be an Integer |
+| startY | `Number` | Left-right horizontal coordinate for the start point, must be an Integer |
+| endX | `Number` | Top-down vertical coordinate for the end point, must be an Integer |
+| endY | `Number` | Left-right horizontal coordinate for the end point, must be an Integer |
+
+####drawRect(x`*`, y`*`, width`*`, height`*`)
+```javascript
+pdfGenerator.drawRect(10, 10, 582, 35);
+```
+Draws a rectangle.
+| Name | Type | Description |
+| --- |:---:| --- |
+| x | `Number` | Top-down horizontal coordinate where 0 is the start point at top, must be an Integer |
+| y | `Number` | Left-right vertical coordinate where 0 is the start point at left, must be an Integer |
+| width | `Number` | Width of the rectangle, must be an Integer |
+| height | `Number` | Height of the rectangle, must be an Integer |
+
+####drawImage(path`*`, x`*`, y`*`, width`*`, height`*`)
+```javascript
+pdfGenerator.drawImage("\mypath\to\my\awesome\image.jpg", 20, 80, 100, 100);
+```
+Draws an image.
+| Name | Type | Description |
+| --- |:---:| --- |
+| path | `String` | Image path location |
+| x | `Number` | Top-down horizontal coordinate where 0 is the start point at top, must be an Integer |
+| y | `Number` | Left-right vertical coordinate where 0 is the start point at left, must be an Integer |
+| width | `Number` | Width of the rectangle, must be an Integer |
+| height | `Number` | Height of the rectangle, must be an Integer |
+
+####drawEllipse(x`*`, y`*`, width`*`, height`*`)
+```javascript
+pdfGenerator.drawEllipse(10, 10, 90, 90);
+```
+Draws an ellipse.
+| Name | Type | Description |
+| --- |:---:| --- |
+| x | `Number` | Top-down horizontal coordinate where 0 is the start point at top, must be an Integer |
+| y | `Number` | Left-right vertical coordinate where 0 is the start point at left, must be an Integer |
+| width | `Number` | Width of the ellipse, must be an Integer |
+| height | `Number` | Height of the ellipse, must be an Integer |
+
+####addURL(url`*`, x`*`, y`*`, width`*`, height`*`)
+```javascript
+pdfGenerator.addURL("http://grupow2abrasil.com.br/", 20, 620, 572, 30);
+```
+Adds a clickable area into a rectangle which opens a link on click.
+| Name | Type | Description |
+| --- |:---:| --- |
+| url | `String` | The link |
+| x | `Number` | Top-down horizontal coordinate where 0 is the start point at top, must be an Integer |
+| y | `Number` | Left-right vertical coordinate where 0 is the start point at left, must be an Integer |
+| width | `Number` | Width of the rectangle for the clickable area, must be an Integer |
+| height | `Number` | Height of the rectangle for the clickable area, must be an Integer |
+
+####cancelPDF()
+```javascript
+pdfGenerator.cancelPDF();
+```
+Cancels the PDF drawing.
+
+####savePDF(pdfName)
+```javascript
+pdfGenerator.savePDF("my_amazing_pdf");
+```
+Saves the PDF file, calling event `pdfReady` when the file is ready.
+| Name | Type | Description |
+| --- |:---:| --- |
+| pdfName | `String` | PDF Name without extension |
+
+####setPageWidth(width`*`)
+```javascript
+pdfGenerator.setPageWidth(620);
+```
+Sets PDF page width.
+| Name | Type | Description |
+| --- |:---:| --- |
+| width | `Number` | Width of the PDF page, must be an Integer |
+
+####getPageWidth()
 ```javascript
 pdfGenerator.getPageWidth();
 ```
-Returns page width that is 619.
+Returns `Number` - Page width (default is 612).
 
+####setPageHeight(height`*`)
+```javascript
+pdfGenerator.setPageHeight(800);
+```
+Sets PDF page height.
+| Name | Type | Description |
+| --- |:---:| --- |
+| height | `Number` | Height of the PDF page, must be an Integer |
+
+####getPageHeight()
 ```javascript
 pdfGenerator.getPageHeight();
 ```
-Returns page height that is 719.
+Returns `Number` - Page height (default is 792).
 
+####getPageCount()
 ```javascript
-pdfGenerator.getPageNumbers();
+pdfGenerator.getPageCount();
 ```
-The same as getPageCount() but returns 0 instead of null when there is no page at all.
+Returns `Number` - Number of pages.
 
 ### Events
 
+####pdfReady
 ```javascript
 pdfGenerator.addEventListener("pdfReady", function(e){
 	Ti.API.info("PDF Path -> " + e.url);
@@ -153,46 +340,46 @@ Event called when PDF is complete.
 The follwing example illustrates the usage of PDF Generator.
 
 ```javascript
-	var docViewer = Ti.UI.iOS.createDocumentViewer();
-	var pdfGenerator = require("br.com.grupow2abrasil.pdfgenerator");
+var docViewer = Ti.UI.iOS.createDocumentViewer();
+var pdfGenerator = require("br.com.grupow2abrasil.pdfgenerator");
 	
-	pdfGenerator.addEventListener("pdfReady", function(e){
-		Ti.API.info("url: " + e.url);
-		docViewer.setUrl(e.url);
-		docViewer.show();
-	});
+pdfGenerator.addEventListener("pdfReady", function(e){
+	Ti.API.info("url: " + e.url);
+	docViewer.setUrl(e.url);
+	docViewer.show();
+});
 	
-	// The PDF name doesn't need extension .pdf, only the name
-	pdfGenerator.setProperties({
-		pdfName: "pdfOutputName",
-	    title: "The title of the PDF",
-	    author: "The author of the PDF",
-	    subject: "A subject if you want",
-	    keywords: "Keyworkds of the PDF",
-	    creator: "PDF Creator"
-	});
-	
-	pdfGenerator.addNewPage();
-	
-	pdfGenerator.drawText("The fox jumps over the lazy fox.", 100, 40, 200, 40);
-	pdfGenerator.drawLine(10, 10, 60, 60);
-	
-	pdfGenerator.drawRect(5, 520, 100, 20);
-	
-	// the image file must be in documents directory
-	var file = Ti.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(), "yourFileName.jpg");
-	
-	pdfGenerator.drawImage(file.nativePath, 500, 80, 16, 16);
-	
-	pdfGenerator.setTextSize(12);
-	pdfGenerator.drawText("I'm a text with different font size", 10, 220, 300, 40);
-	pdfGenerator.setTextColor(158, 67, 89);
-	pdfGenerator.drawText("I'm a text with different color", 10, 120, 300, 40);
-	
-	pdfGenerator.setLineWidth(5.0);
-	pdfGenerator.drawRect(50, 80, 25, 60);
-	
-	pdfGenerator.savePDF();
+// The PDF name doesn't need extension .pdf, only the name
+pdfGenerator.setProperties({
+	pdfName: "pdfOutputName",
+    title: "The title of the PDF",
+    author: "The author of the PDF",
+    subject: "A subject if you want",
+    keywords: "Keyworkds of the PDF",
+    creator: "PDF Creator"
+});
+
+pdfGenerator.addNewPage();
+
+pdfGenerator.drawText("The fox jumps over the lazy fox.", 100, 40, 200, 40);
+pdfGenerator.drawLine(10, 10, 60, 60);
+
+pdfGenerator.drawRect(5, 520, 100, 20);
+
+// the image file must be in documents directory
+var file = Ti.Filesystem.getFile(Titanium.Filesystem.getApplicationDataDirectory(), "yourFileName.jpg");
+
+pdfGenerator.drawImage(file.nativePath, 500, 80, 16, 16);
+
+pdfGenerator.setTextSize(12);
+pdfGenerator.drawText("I'm a text with different font size", 10, 220, 300, 40);
+pdfGenerator.setTextColor(158, 67, 89);
+pdfGenerator.drawText("I'm a text with different color", 10, 120, 300, 40);
+
+pdfGenerator.setLineWidth(5.0);
+pdfGenerator.drawRect(50, 80, 25, 60);
+
+pdfGenerator.savePDF();
 ```
 
 ## Author
@@ -204,7 +391,7 @@ by Grupo W2ABrasil with :heart:
 PDF Generator is licensed under MIT.
 
 ```
-Copyright (c) 2018 Grupo W2ABrasil
+ Copyright (c) 2018 Grupo W2ABrasil
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal

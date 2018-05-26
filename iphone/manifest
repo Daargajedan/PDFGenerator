@@ -1,10 +1,10 @@
-version: 1.0.0
+version: 1.1.0
 apiversion: 2
 architectures: armv7 arm64 i386 x86_64
 description: PDF Generator
 author: Grupo W2ABrasil
 license: MIT
-copyright: Copyright (c) 2017 by Grupo W2ABrasil
+copyright: Copyright (c) 2018 by Grupo W2ABrasil
 
 # these should not be edited
 name: PDF Generator

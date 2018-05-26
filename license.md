@@ -1,4 +1,4 @@
-Copyright (c) 2018 Grupo W2ABrasil
+ Copyright (c) 2018 Grupo W2ABrasil
 
  Permission is hereby granted, free of charge, to any person obtaining a copy
  of this software and associated documentation files (the "Software"), to deal
