@@ -35,11 +35,11 @@ var pdfGenerator = require('br.com.grupow2abrasil.pdfgenerator');
 
 Then set the properties of your PDF and start drawing. To save call the savePDF function.
 
-### Methods
+## Methods
 
 All parameters with `*` are required.
 
-####setProperties(obj`*`)
+###setProperties(obj`*`)
 ```javascript
 pdfGenerator.setProperties({
 	pdfName: "output",
@@ -55,19 +55,19 @@ Sets the properties of the PDF, *must* be called before everything if you want t
 | --- |:---:| --- |
 | obj | `Object` | property_name-to-property_value object structure |
 
-####getProperties
+###getProperties
 ```
 var props = pdfGenerator.getProperties();
 ```
 Returns `Object` - PDF properties.
 
-####addNewPage()
+###addNewPage()
 ```javascript
 pdfGenerator.addNewPage();
 ```
 Adds a new page to the PDF.
 
-####deletePage(page`*`)
+###deletePage(page`*`)
 ```javascript
 pdfGenerator.deletePage(3);
 ```
@@ -76,7 +76,7 @@ Deletes a page from the PDF.
 | --- |:---:| --- |
 | page | `Number` | Index of the page to be deleted, starts with 1 and must be an Integer |
 
-####forEachPage(fnc`*`)
+###forEachPage(fnc`*`)
 ```javascript
 pdfGenerator.forEachPage(function(pageIndex, total){
 	// Drawing functions here, you can draw the header and footer, example:
@@ -90,7 +90,7 @@ Executes a function for each page of the PDF where you can draw into.
 | --- |:---:| --- |
 | fnc | `Function` | Function which will be executed for each page receiving the parameters index and total, both `Number`s |
 
-####setTextColor(R`*`, G`*`, B`*`, A)
+###setTextColor(R`*`, G`*`, B`*`, A)
 ```javascript
 pdfGenerator.setTextColor(27, 27, 27, 1.0);
 ```
@@ -102,7 +102,7 @@ Sets the text color in RGBA notation or RGB if A is omitted.
 | B | `Number`| Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
 | A | `Number` | Alpha channel value, must be a value in the range from 0.0 (transparent) to 1.0 (solid color) |
 
-####setDrawColor(R`*`, G`*`, B`*`, A)
+###setDrawColor(R`*`, G`*`, B`*`, A)
 ```javascript
 pdfGenerator.setDrawColor(27, 27, 27, 1.0);
 ```
@@ -114,7 +114,7 @@ Sets the draw color in RGBA notation or RGB if A is omitted.
 | B | `Number`| Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
 | A | `Number` | Alpha channel value, must be a value in the range from 0.0 (transparent) to 1.0 (solid color) |
 
-####setFillColor(R`*`, G`*`, B`*`, A)
+###setFillColor(R`*`, G`*`, B`*`, A)
 ```javascript
 pdfGenerator.setFillColor(255, 255, 255, 0.0);
 ```
@@ -126,7 +126,7 @@ Sets the fill color in RGBA notation or RGB if A is omitted. This property appli
 | B | `Number`| Color channel value, must be a value in the range from 0 (solid black) to 255 (white) |
 | A | `Number` | Alpha channel value, must be a value in the range from 0.0 (transparent) to 1.0 (solid color) |
 
-####setLineWidth(width`*`)
+###setLineWidth(width`*`)
 ```javascript
 pdfGenerator.setLineWidth(0.1);
 ```
@@ -135,13 +135,13 @@ Sets line width for upcoming lines and shapes.
 | --- |:---:| --- |
 | width | `Number` | Line width, must be a float/double |
 
-####getLineWidth()
+###getLineWidth()
 ```javascript
 pdfGenerator.getLineWidth();
 ```
 Returns `Number` - Line width.
 
-####setFontName(fontName`*`)
+###setFontName(fontName`*`)
 ```javascript
 pdfGenerator.setFontName("Helvetica");
 ```
@@ -150,13 +150,13 @@ Sets text font for upcoming text elements.
 | --- |:---:| --- |
 | fontName | `String` | Font name or family. Style or variant must be included in the fontName, example: `Helvetica-Bold` |
 
-####getFontName()
+###getFontName()
 ```javascript
 pdfGenerator.getFontName();
 ```
 Returns `String` - Current font name.
 
-####setTextSize(size`*`)
+###setTextSize(size`*`)
 ```javascript
 pdfGenerator.setTextSize(14);
 ```
@@ -165,13 +165,13 @@ Sets text size for upcoming text elements.
 | --- |:---:| --- |
 | size | `Number` | Font name or family. Style or variant must be included in the fontName, example: `Helvetica-Bold` |
 
-####getTextSize()
+###getTextSize()
 ```javascript
 pdfGenerator.getTextSize();
 ```
 Returns `Number` - Current size of text.
 
-####setTextAlign(alignment`*`)
+###setTextAlign(alignment`*`)
 ```javascript
 pdfGenerator.setTextAlign("center");
 ```
@@ -180,13 +180,13 @@ Sets text horizontal alignment for upcoming text elements.
 | --- |:---:| --- |
 | alignment | `String` | Horizontal text alignment, available values are `left`, `center`, `right`, `justified` |
 
-####getTextAlign()
+###getTextAlign()
 ```javascript
 pdfGenerator.getTextAlign();
 ```
 Returns `String` - Current text horizontal alignment.
 
-####setTextVerticalAlign(alignment`*`)
+###setTextVerticalAlign(alignment`*`)
 ```javascript
 pdfGenerator.setTextVerticalAlign("middle");
 ```
@@ -195,13 +195,13 @@ Sets text vertical alignment for upcoming text elements.
 | --- |:---:| --- |
 | alignment | `String` | Vertical text alignment, available values are `top`, `middle`, `bottom` |
 
-####getTextVerticalAlign()
+###getTextVerticalAlign()
 ```javascript
 pdfGenerator.getTextVerticalAlign();
 ```
 Returns `String` - Current text vertical alignment.
 
-####setPdfName(pdfName`*`)
+###setPdfName(pdfName`*`)
 ```javascript
 pdfGenerator.setPdfName("my_awesome_pdf");
 ```
@@ -210,13 +210,13 @@ Sets the file name of the generated PDF.
 | --- |:---:| --- |
 | pdfName | `String` | The name of the PDF without file extension |
 
-####getPdfName()
+###getPdfName()
 ```javascript
 pdfGenerator.getPdfName();
 ```
 Returns `String` - PDF filename.
 
-####drawText(text`*`, x`*`, y`*`, width`*`, height`*`)
+###drawText(text`*`, x`*`, y`*`, width`*`, height`*`)
 ```javascript
 pdfGenerator.drawText("The fox jumps over the lazy dog", 20, 20, 572, 30);
 ```
@@ -229,7 +229,7 @@ Writes text to the PDF.
 | width | `Number` | Width of the rect where the text will be drawn, must be an Integer |
 | height | `Number` | Height of the rect where the text will be drawn, must be an Integer |
 
-####drawLine(startX`*`, startY`*`, endX`*`, endY`*`)
+###drawLine(startX`*`, startY`*`, endX`*`, endY`*`)
 ```javascript
 pdfGenerator.drawLine(20, 20, 500, 500);
 ```
@@ -241,7 +241,7 @@ Draws a line from one point to other.
 | endX | `Number` | Top-down vertical coordinate for the end point, must be an Integer |
 | endY | `Number` | Left-right horizontal coordinate for the end point, must be an Integer |
 
-####drawRect(x`*`, y`*`, width`*`, height`*`)
+###drawRect(x`*`, y`*`, width`*`, height`*`)
 ```javascript
 pdfGenerator.drawRect(10, 10, 582, 35);
 ```
@@ -253,7 +253,7 @@ Draws a rectangle.
 | width | `Number` | Width of the rectangle, must be an Integer |
 | height | `Number` | Height of the rectangle, must be an Integer |
 
-####drawImage(path`*`, x`*`, y`*`, width`*`, height`*`)
+###drawImage(path`*`, x`*`, y`*`, width`*`, height`*`)
 ```javascript
 pdfGenerator.drawImage("\mypath\to\my\awesome\image.jpg", 20, 80, 100, 100);
 ```
@@ -266,7 +266,7 @@ Draws an image.
 | width | `Number` | Width of the rectangle, must be an Integer |
 | height | `Number` | Height of the rectangle, must be an Integer |
 
-####drawEllipse(x`*`, y`*`, width`*`, height`*`)
+###drawEllipse(x`*`, y`*`, width`*`, height`*`)
 ```javascript
 pdfGenerator.drawEllipse(10, 10, 90, 90);
 ```
@@ -278,7 +278,7 @@ Draws an ellipse.
 | width | `Number` | Width of the ellipse, must be an Integer |
 | height | `Number` | Height of the ellipse, must be an Integer |
 
-####addURL(url`*`, x`*`, y`*`, width`*`, height`*`)
+###addURL(url`*`, x`*`, y`*`, width`*`, height`*`)
 ```javascript
 pdfGenerator.addURL("http://grupow2abrasil.com.br/", 20, 620, 572, 30);
 ```
@@ -291,13 +291,13 @@ Adds a clickable area into a rectangle which opens a link on click.
 | width | `Number` | Width of the rectangle for the clickable area, must be an Integer |
 | height | `Number` | Height of the rectangle for the clickable area, must be an Integer |
 
-####cancelPDF()
+###cancelPDF()
 ```javascript
 pdfGenerator.cancelPDF();
 ```
 Cancels the PDF drawing.
 
-####savePDF(pdfName)
+###savePDF(pdfName)
 ```javascript
 pdfGenerator.savePDF("my_amazing_pdf");
 ```
@@ -306,7 +306,7 @@ Saves the PDF file, calling event `pdfReady` when the file is ready.
 | --- |:---:| --- |
 | pdfName | `String` | PDF Name without extension |
 
-####setPageWidth(width`*`)
+###setPageWidth(width`*`)
 ```javascript
 pdfGenerator.setPageWidth(620);
 ```
@@ -315,13 +315,13 @@ Sets PDF page width.
 | --- |:---:| --- |
 | width | `Number` | Width of the PDF page, must be an Integer |
 
-####getPageWidth()
+###getPageWidth()
 ```javascript
 pdfGenerator.getPageWidth();
 ```
 Returns `Number` - Page width (default is 612).
 
-####setPageHeight(height`*`)
+###setPageHeight(height`*`)
 ```javascript
 pdfGenerator.setPageHeight(800);
 ```
@@ -330,21 +330,21 @@ Sets PDF page height.
 | --- |:---:| --- |
 | height | `Number` | Height of the PDF page, must be an Integer |
 
-####getPageHeight()
+###getPageHeight()
 ```javascript
 pdfGenerator.getPageHeight();
 ```
 Returns `Number` - Page height (default is 792).
 
-####getPageCount()
+###getPageCount()
 ```javascript
 pdfGenerator.getPageCount();
 ```
 Returns `Number` - Number of pages.
 
-### Events
+## Events
 
-####pdfReady
+###pdfReady
 ```javascript
 pdfGenerator.addEventListener("pdfReady", function(e){
 	Ti.API.info("PDF Path -> " + e.url);
