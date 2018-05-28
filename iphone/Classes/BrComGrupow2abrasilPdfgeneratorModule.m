@@ -760,12 +760,12 @@
             CGRect frameRect = CGRectMake(xArg.intValue, yArg.intValue + heightArg.intValue, widthArg.intValue, heightArg.intValue);
             
             // Unfortunately doesn't work well for all text fonts
-            if([_textVerticalAlign isEqualToString:@"middle"]) {
+            if([_textVerticalAlign isEqualToString:@"bottom"]) {
                 CGSize textSize = [textToDraw sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:_fontName size:[_textSize intValue]], NSParagraphStyleAttributeName: paragraphStyle}];
                 
                 frameRect.origin.y = frameRect.origin.y + frameRect.size.height - textSize.height;
                 
-            } else if([_textVerticalAlign isEqualToString:@"bottom"]) {
+            } else if([_textVerticalAlign isEqualToString:@"middle"]) {
                 CGSize textSize = [textToDraw sizeWithAttributes:@{NSFontAttributeName: [UIFont fontWithName:_fontName size:[_textSize intValue]], NSParagraphStyleAttributeName: paragraphStyle}];
                 
                 frameRect.origin.y = frameRect.origin.y + (frameRect.size.height - textSize.height) / 2;
