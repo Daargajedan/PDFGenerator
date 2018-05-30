@@ -13,3 +13,10 @@
 * Added input validation to all methods
 * Fixed a lot of bugs
 * Added new bugs to fix later... J/K
+
+##Version 2.0.0
+
+* Removed event `pdfReady` instead, now after save, a function is called
+* Fixed text vertical position bug where middle was bottom instead of middle
+* Few improvements
+* Fixed some bugs and added new bugs to fix later

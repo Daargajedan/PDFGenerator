@@ -59,6 +59,13 @@
     _textAlign = @"left";
     _textVerticalAlign = @"top";
     
+    if(_context != NULL) {
+        // Close the old PDF context if exists and write the contents out.
+        UIGraphicsEndPDFContext();
+        // Sets null
+        _context = NULL;
+    }
+    
 	NSLog(@"[DEBUG] %@ Módulo PDFGenerator Loaded",self);
 }
 
@@ -91,21 +98,14 @@
 
 -(void)_listenerAdded:(NSString *)type count:(int)count
 {
-	if (count == 1 && [type isEqualToString:@"pdfReady"])
-	{
-		// the first (of potentially many) listener is being added
-		// for event named 'pdfReady'
-	}
+	// count -> quantity of listener
+    // type  -> name of the event
 }
 
 -(void)_listenerRemoved:(NSString *)type count:(int)count
 {
-	if (count == 0 && [type isEqualToString:@"pdfReady"])
-	{
-		// the last listener called for event named 'pdfReady' has
-		// been removed, we can optionally clean up any resources
-		// since no body is listening at this point for that event
-	}
+    // count -> quantity of listener
+    // type  -> name of the event
 }
 
 #pragma Public APIs
@@ -799,11 +799,11 @@
             CFRelease(framesetter);
             
         } else {
-            NSLog(@"[ERROR] Incorrect parameters for function drawText on %@", CODELOCATION);
+            NSLog(@"[ERROR] Incorrect parameters for function drawText");
         }
         
     } else {
-        NSLog(@"[ERROR] Incorrect number of parameters for function drawText.");
+        NSLog(@"[ERROR] Incorrect number of parameters for function drawText");
     }
 }
 
@@ -1136,86 +1136,100 @@
 {
     NSString *pdfName = NULL;
     NSString *pdfFileName = NULL;
+    KrollCallback *callback = NULL;
     
-    if(args != NULL && [args count] > 0) {
+    if(args != NULL && [args count] == 2) {
         if( [[args objectAtIndex:0] isKindOfClass:[NSString class]] ) {
             pdfName = [args objectAtIndex:0];
         } else {
-            NSLog(@"[ERROR] Wrong type of parameter, expected String.");
+            NSLog(@"[ERROR] Wrong type of parameter, expected String for first parameter.");
         }
-    }
-    
-    // Create the PDF context
-    if(_context == NULL) {
-        if(pdfName != NULL) {
-            _pdfName = pdfName;
-        }
-        else if( _pdfName == NULL || [_pdfName isEqualToString:@""] ) {
-            _pdfName = @"output";
-        }
-        // Adds a blank page
-        [self addNewPage:NULL];
-    }
-    
-    // Close the PDF context and write the contents out
-    UIGraphicsEndPDFContext();
-    
-    // Release context
-    _context = NULL;
-    
-    // If pdf name is null or is set a new PDF name
-    if( pdfName != NULL && ![_pdfName isEqualToString:pdfName] ) {
-        // Rename PDF file
-        NSArray *arrayPaths =
-        NSSearchPathForDirectoriesInDomains(
-                                            NSDocumentDirectory,
-                                            NSUserDomainMask,
-                                            YES);
-        
-        NSString *path = [arrayPaths objectAtIndex:0];
-        
-        NSString *oldPath = [path stringByAppendingPathComponent:[_pdfName stringByAppendingString:@".pdf"]];
-        NSString *newPath = [path stringByAppendingPathComponent:[pdfName stringByAppendingString:@".pdf"]];
-        
-        NSFileManager *fileManager = [NSFileManager defaultManager];
-        NSError *error = nil;
-        
-        if([fileManager fileExistsAtPath:newPath]) {
-            [fileManager removeItemAtPath:newPath error: &error];
-        }
-        
-        if(error != nil) {
-            NSLog(@"[ERROR] Failed to delete file. %@", [error localizedDescription]);
-            error = nil;
-        }
-        
-        if([fileManager moveItemAtPath:oldPath toPath:newPath error: &error]) {
-            pdfFileName = newPath;
+        if( [[args objectAtIndex:1] isKindOfClass:[KrollCallback class]] ) {
+            callback = [args objectAtIndex:1];
         } else {
-            pdfFileName = oldPath;
+            NSLog(@"[ERROR] Wrong type of parameter, expected Callback for second parameter.");
         }
         
-        if(error != nil) {
-            NSLog(@"[ERROR] Failed rename file. %@", [error localizedDescription]);
-            error = nil;
+    } else if(args != NULL && [args count] == 1) {
+        if( [[args objectAtIndex:0] isKindOfClass:[KrollCallback class]] ) {
+            callback = [args objectAtIndex:0];
+        } else {
+            NSLog(@"[ERROR] Wrong type of parameter, expected Callback parameter.");
         }
     } else {
-        NSArray *arrayPaths =
-        NSSearchPathForDirectoriesInDomains(
-                                            NSDocumentDirectory,
-                                            NSUserDomainMask,
-                                            YES);
-        
-        NSString *path = [arrayPaths objectAtIndex:0];
-        
-        pdfFileName = [path stringByAppendingPathComponent:[_pdfName stringByAppendingString:@".pdf"]];
+        NSLog(@"[ERROR] Incorrect number of parameters for function savePDF.");
     }
     
-    // Fire event to JS
-    if([self _hasListeners:@"pdfReady"]) {
-        [self fireEvent:@"pdfReady" withObject:@{@"url":pdfFileName}];
-    } else {
-        NSLog(@"[ERROR] No listeners found to event pdfReady");
+    if(callback != NULL) {
+        // Create the PDF context
+        if(_context == NULL) {
+            if(pdfName != NULL) {
+                _pdfName = pdfName;
+            }
+            else if( _pdfName == NULL || [_pdfName isEqualToString:@""] ) {
+                _pdfName = @"output";
+            }
+            // Adds a blank page
+            [self addNewPage:NULL];
+        }
+        
+        // Close the PDF context and write the contents out
+        UIGraphicsEndPDFContext();
+        
+        // Release context
+        _context = NULL;
+        
+        // If pdf name is null or is set a new PDF name
+        if( pdfName != NULL && ![_pdfName isEqualToString:pdfName] ) {
+            // Rename PDF file
+            NSArray *arrayPaths =
+            NSSearchPathForDirectoriesInDomains(
+                                                NSDocumentDirectory,
+                                                NSUserDomainMask,
+                                                YES);
+            
+            NSString *path = [arrayPaths objectAtIndex:0];
+            
+            NSString *oldPath = [path stringByAppendingPathComponent:[_pdfName stringByAppendingString:@".pdf"]];
+            NSString *newPath = [path stringByAppendingPathComponent:[pdfName stringByAppendingString:@".pdf"]];
+            
+            NSFileManager *fileManager = [NSFileManager defaultManager];
+            NSError *error = nil;
+            
+            if([fileManager fileExistsAtPath:newPath]) {
+                [fileManager removeItemAtPath:newPath error: &error];
+            }
+            
+            if(error != nil) {
+                NSLog(@"[ERROR] Failed to delete file. %@", [error localizedDescription]);
+                error = nil;
+            }
+            
+            if([fileManager moveItemAtPath:oldPath toPath:newPath error: &error]) {
+                pdfFileName = newPath;
+            } else {
+                pdfFileName = oldPath;
+            }
+            
+            if(error != nil) {
+                NSLog(@"[ERROR] Failed rename file. %@", [error localizedDescription]);
+                error = nil;
+            }
+        } else {
+            NSArray *arrayPaths =
+            NSSearchPathForDirectoriesInDomains(
+                                                NSDocumentDirectory,
+                                                NSUserDomainMask,
+                                                YES);
+            
+            NSString *path = [arrayPaths objectAtIndex:0];
+            
+            pdfFileName = [path stringByAppendingPathComponent:[_pdfName stringByAppendingString:@".pdf"]];
+        }
+        
+        // Fire callback event
+        NSArray *objs = @[@{@"url":pdfFileName}];
+        [callback call:objs thisObject:nil];
     }
 }
 

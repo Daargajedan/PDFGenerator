@@ -290,14 +290,16 @@ pdfGenerator.cancelPDF();
 ```
 Cancels the PDF drawing.
 
-###savePDF(pdfName)
+###savePDF(callback`*`)
 ```javascript
-pdfGenerator.savePDF("my_amazing_pdf");
+pdfGenerator.savePDF(function(e){
+	Ti.API.info("My Awesome PDF is located at: " + e.url);
+});
 ```
 Saves the PDF file, calling event `pdfReady` when the file is ready.
 | Name | Type | Description |
 | --- |:---:| --- |
-| pdfName | `String` | PDF Name without extension |
+| pdfName | `Function` | A callback function which will be called when PDF is ready returning a dictionary with the file url |
 
 ###setPageWidth(width`*`)
 ```javascript
@@ -335,16 +337,6 @@ pdfGenerator.getPageCount();
 ```
 Returns `Number` - Number of pages.
 
-## Events
-
-###pdfReady
-```javascript
-pdfGenerator.addEventListener("pdfReady", function(e){
-	Ti.API.info("PDF Path -> " + e.url);
-});
-```
-Event called when PDF is complete.
-
 ## Example
 
 The follwing example illustrates the usage of PDF Generator.
@@ -352,12 +344,6 @@ The follwing example illustrates the usage of PDF Generator.
 ```javascript
 var docViewer = Ti.UI.iOS.createDocumentViewer();
 var pdfGenerator = require("br.com.grupow2abrasil.pdfgenerator");
-	
-pdfGenerator.addEventListener("pdfReady", function(e){
-	Ti.API.info("url: " + e.url);
-	docViewer.setUrl(e.url);
-	docViewer.show();
-});
 	
 // The PDF name doesn't need extension .pdf, only the name
 pdfGenerator.setProperties({
@@ -389,7 +375,11 @@ pdfGenerator.drawText("I'm a text with different color", 10, 120, 300, 40);
 pdfGenerator.setLineWidth(5.0);
 pdfGenerator.drawRect(50, 80, 25, 60);
 
-pdfGenerator.savePDF();
+pdfGenerator.savePDF(function(e){
+	Ti.API.info("url: " + e.url);
+	docViewer.setUrl(e.url);
+	docViewer.show();
+});
 ```
 
 ## Author
