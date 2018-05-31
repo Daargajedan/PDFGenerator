@@ -25,7 +25,7 @@ All parameters with `*` are required.
 ### setProperties(obj`*`)
 ```javascript
 pdfGenerator.setProperties({
-pdfName: "output",
+    pdfName: "output",
     title: "",
     author: "",
     subject: "",
@@ -40,10 +40,22 @@ Sets the properties of the PDF, *must* be called before everything if you want t
 | obj | `Object` | property_name-to-property_value object structure |
 
 ### getProperties
-```
+```javascript
 var props = pdfGenerator.getProperties();
 ```
 Returns `Object` - PDF properties.
+
+### openPDF(path`*`)
+```javascript
+var file = Ti.Filesystem.getFile(Ti.Filesystem.getApplicationDataDirectory(), "my_awesome_pdf.jpg");
+
+pdfGenerator.openPDF(file.nativePath);
+```
+Opens a PDF where you can add new pages (`addNewPage`), delete pages (` deletePage`) and draw/write something `forEachPage`. Keep in mind that PDF is read-only, so you can not, for example, edit shapes, change texts or such things on pages that have already been finished.
+
+| Name | Type | Description |
+| --- |:---:| --- |
+| path | `String` | The PDF file URL, it *must* be in the application folders. |
 
 ### addNewPage()
 ```javascript
@@ -64,10 +76,10 @@ Deletes a page from the PDF.
 ### forEachPage(fnc`*`)
 ```javascript
 pdfGenerator.forEachPage(function(pageIndex, total){
-	// Drawing functions here, you can draw the header and footer, example:
-	pdfGenerator.drawText("Page " + pageIndex + " of " + total, 20, 700, 572, 30);
+    // Drawing functions here, you can draw the header and footer, example:
+    pdfGenerator.drawText("Page " + pageIndex + " of " + total, 20, 700, 572, 30);
 
-	// More drawing function as you wish
+    // More drawing function as you wish
 });
 ```
 Executes a function for each page of the PDF where you can draw into.
@@ -152,6 +164,7 @@ Returns `String` - Current font name.
 pdfGenerator.setTextSize(14);
 ```
 Sets text size for upcoming text elements.
+
 | Name | Type | Description |
 | --- |:---:| --- |
 | size | `Number` | Font name or family. Style or variant must be included in the fontName, example: `Helvetica-Bold` |
@@ -300,10 +313,10 @@ Cancels the PDF drawing.
 ### savePDF(callback`*`)
 ```javascript
 pdfGenerator.savePDF(function(e){
-	Ti.API.info("My Awesome PDF is located at: " + e.url);
+    Ti.API.info("My Awesome PDF is located at: " + e.url);
 });
 ```
-Saves the PDF file, calling event `pdfReady` when the file is ready.
+Saves the PDF file, calling callback when the file is ready.
 
 | Name | Type | Description |
 | --- |:---:| --- |
@@ -354,10 +367,10 @@ The follwing example illustrates the usage of PDF Generator.
 ```javascript
 var docViewer = Ti.UI.iOS.createDocumentViewer();
 var pdfGenerator = require("br.com.grupow2abrasil.pdfgenerator");
-	
+
 // The PDF name doesn't need extension .pdf, only the name
 pdfGenerator.setProperties({
-	pdfName: "pdfOutputName",
+    pdfName: "pdfOutputName",
     title: "The title of the PDF",
     author: "The author of the PDF",
     subject: "A subject if you want",
@@ -385,10 +398,12 @@ pdfGenerator.drawText("I'm a text with different color", 10, 120, 300, 40);
 pdfGenerator.setLineWidth(5.0);
 pdfGenerator.drawRect(50, 80, 25, 60);
 
+pdfGenerator.drawEllipse(200, 300, 25, 60);
+
 pdfGenerator.savePDF(function(e){
-	Ti.API.info("url: " + e.url);
-	docViewer.setUrl(e.url);
-	docViewer.show();
+    Ti.API.info("url: " + e.url);
+    docViewer.setUrl(e.url);
+    docViewer.show();
 });
 ```
 
